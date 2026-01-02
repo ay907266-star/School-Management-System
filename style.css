@@ -1,19 +1,23 @@
 :root {
     /* Colors */
-    --primary: #6366f1; /* Indigo 500 */
+    --primary: #6366f1;
+    /* Indigo 500 */
     --primary-dark: #4f46e5;
     --primary-light: #e0e7ff;
-    
-    --text-main: #1e293b; /* Slate 800 */
-    --text-muted: #64748b; /* Slate 500 */
+
+    --text-main: #1e293b;
+    /* Slate 800 */
+    --text-muted: #64748b;
+    /* Slate 500 */
     --text-light: #94a3b8;
-    
-    --bg-body: #f1f5f9; /* Slate 100 */
+
+    --bg-body: #f1f5f9;
+    /* Slate 100 */
     --bg-card: #ffffff;
     --bg-sidebar: #ffffff;
-    
+
     --border: #e2e8f0;
-    
+
     --success: #10b981;
     --warning: #f59e0b;
     --danger: #ef4444;
@@ -37,10 +41,15 @@
 body {
     background-color: --bg-body;
     color: var(--text-main);
-    overflow: hidden; /* For full screen app feel */
+    overflow: hidden;
+    /* For full screen app feel */
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
     font-family: 'Outfit', sans-serif;
 }
 
@@ -161,7 +170,8 @@ h1, h2, h3, h4, h5 {
 
 .topbar {
     height: 80px;
-    background-color: var(--bg-body); /* blended with body */
+    background-color: var(--bg-body);
+    /* blended with body */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -298,9 +308,20 @@ h1, h2, h3, h4, h5 {
     font-size: 1.5rem;
 }
 
-.bg-indigo { background-color: var(--primary-light); color: var(--primary); }
-.bg-green { background-color: #dcfce7; color: var(--success); }
-.bg-orange { background-color: #ffedd5; color: var(--warning); }
+.bg-indigo {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.bg-green {
+    background-color: #dcfce7;
+    color: var(--success);
+}
+
+.bg-orange {
+    background-color: #ffedd5;
+    color: var(--warning);
+}
 
 /* Tables */
 .table-container {
@@ -373,8 +394,15 @@ tr:last-child td {
     font-weight: 500;
 }
 
-.badge-success { background-color: #dcfce7; color: var(--success); }
-.badge-warning { background-color: #ffedd5; color: var(--warning); }
+.badge-success {
+    background-color: #dcfce7;
+    color: var(--success);
+}
+
+.badge-warning {
+    background-color: #ffedd5;
+    color: var(--warning);
+}
 
 .action-btn {
     background: transparent;
@@ -386,8 +414,13 @@ tr:last-child td {
     transition: var(--transition);
 }
 
-.action-btn.edit:hover { color: var(--primary); }
-.action-btn.delete:hover { color: var(--danger); }
+.action-btn.edit:hover {
+    color: var(--primary);
+}
+
+.action-btn.delete:hover {
+    color: var(--danger);
+}
 
 /* Modal */
 .modal-overlay {
@@ -396,7 +429,7 @@ tr:last-child td {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -494,10 +527,106 @@ tr:last-child td {
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
 
 .animate-fade-in {
     animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Responsive Design */
+.hidden-desktop {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hidden-desktop {
+        display: flex;
+        /* match icon-btn display */
+        margin-right: 1rem;
+        border: none;
+        background: transparent;
+        font-size: 1.4rem;
+        color: var(--text-main);
+    }
+
+    .app-container {
+        position: relative;
+    }
+
+    /* Sidebar Mobile */
+    .sidebar {
+        position: absolute;
+        left: -280px;
+        height: 100%;
+        box-shadow: var(--shadow-lg);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.open {
+        transform: translateX(280px);
+    }
+
+    /* Main Content Mobile */
+    .main-content {
+        width: 100%;
+    }
+
+    .topbar {
+        padding: 0 1rem;
+    }
+
+    .search-box {
+        display: none;
+        /* Hide search on small mobile for simplicity, or make it an icon */
+    }
+
+    .page-title h1 {
+        font-size: 1.4rem;
+    }
+
+    .current-date {
+        display: none;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content-area {
+        padding: 1rem;
+        padding-top: 0;
+    }
+
+    /* Tables Mobile */
+    .table-container {
+        padding: 1rem;
+        overflow-x: auto;
+        /* Enable horizontal scroll */
+    }
+
+    table {
+        min-width: 600px;
+        /* Force table width to trigger scroll */
+    }
+
+    .modal {
+        width: 90%;
+        margin: 0 1rem;
+    }
 }

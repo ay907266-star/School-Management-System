@@ -40,16 +40,40 @@ function setupNavigation() {
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
-            
+
             // Remove active class from all
             navItems.forEach(nav => nav.classList.remove('active'));
-            
+
             // Add active class to clicked
             item.classList.add('active');
-            
+
             const view = item.dataset.view;
             handleViewChange(view);
+
+            // Close sidebar on mobile when item clicked
+            if (window.innerWidth <= 768) {
+                document.querySelector('.sidebar').classList.remove('open');
+            }
         });
+    });
+
+    // Sidebar Toggle
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+    }
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target) && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        }
     });
 
     closeModalBtn.addEventListener('click', closeModal);
@@ -58,9 +82,9 @@ function setupNavigation() {
 function handleViewChange(view) {
     // smooth transition
     contentArea.style.opacity = 0;
-    
+
     setTimeout(() => {
-        switch(view) {
+        switch (view) {
             case 'dashboard':
                 renderDashboard();
                 break;
@@ -90,7 +114,7 @@ function loadData() {
 }
 
 function getInitialData() {
- 
+
     return JSON.parse(JSON.stringify(initialState));
 }
 
@@ -101,11 +125,11 @@ function saveData() {
 // Views rendering
 function renderDashboard() {
     pageHeader.textContent = 'Dashboard';
-    
+
     const totalStudents = appData.students.length;
     const totalTeachers = appData.teachers.length;
     const activeStudents = appData.students.filter(s => s.status === 'Active').length;
-    
+
     contentArea.innerHTML = `
         <div class="dashboard-grid animate-fade-in">
             <div class="stat-card">
@@ -167,7 +191,7 @@ function renderDashboard() {
 
 function renderStudents() {
     pageHeader.textContent = 'Students';
-    
+
     const rows = appData.students.map(student => `
         <tr>
             <td>
@@ -211,7 +235,7 @@ function renderStudents() {
 
 function renderTeachers() {
     pageHeader.textContent = 'Teachers';
-    
+
     const rows = appData.teachers.map(teacher => `
         <tr>
             <td>
@@ -276,7 +300,7 @@ function closeModal() {
 }
 
 // Specific Modals
-window.openAddStudentModal = function() {
+window.openAddStudentModal = function () {
     const formHtml = `
         <form id="add-student-form">
             <div class="form-group">
@@ -304,13 +328,13 @@ window.openAddStudentModal = function() {
             </div>
         </form>
     `;
-    
+
     openModal('Add New Student', formHtml);
-    
+
     document.getElementById('add-student-form').addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        
+
         const newStudent = {
             id: Date.now(),
             name: formData.get('name'),
@@ -318,7 +342,7 @@ window.openAddStudentModal = function() {
             email: formData.get('email'),
             status: formData.get('status')
         };
-        
+
         appData.students.push(newStudent);
         saveData();
         closeModal();
@@ -326,7 +350,7 @@ window.openAddStudentModal = function() {
     });
 };
 
-window.openAddTeacherModal = function() {
+window.openAddTeacherModal = function () {
     const formHtml = `
         <form id="add-teacher-form">
             <div class="form-group">
@@ -347,20 +371,20 @@ window.openAddTeacherModal = function() {
             </div>
         </form>
     `;
-    
+
     openModal('Add New Teacher', formHtml);
-    
+
     document.getElementById('add-teacher-form').addEventListener('submit', (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        
+
         const newTeacher = {
             id: Date.now(),
             name: formData.get('name'),
             subject: formData.get('subject'),
             email: formData.get('email')
         };
-        
+
         appData.teachers.push(newTeacher);
         saveData();
         closeModal();
@@ -368,24 +392,24 @@ window.openAddTeacherModal = function() {
     });
 };
 
-window.deleteStudent = function(id) {
-    if(confirm('Are you sure you want to delete this student?')) {
+window.deleteStudent = function (id) {
+    if (confirm('Are you sure you want to delete this student?')) {
         appData.students = appData.students.filter(s => s.id !== id);
         saveData();
         renderStudents();
     }
 };
 
-window.deleteTeacher = function(id) {
-    if(confirm('Are you sure you want to delete this teacher?')) {
+window.deleteTeacher = function (id) {
+    if (confirm('Are you sure you want to delete this teacher?')) {
         appData.teachers = appData.teachers.filter(t => t.id !== id);
         saveData();
         renderTeachers();
     }
 };
 
-window.resetData = function() {
-    if(confirm('This will reset all data to default. Continue?')) {
+window.resetData = function () {
+    if (confirm('This will reset all data to default. Continue?')) {
         appData = getInitialData();
         saveData();
         renderSettings();
